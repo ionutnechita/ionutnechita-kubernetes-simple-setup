@@ -1,0 +1,4 @@
+agent:
+  name: "jenkins-agent"
+  secret: "d82dc063e1a77e403065118835ed53434808a6291f701936a0f15d5cb50e1a38"
+  jenkinsUrl: "http://localhost/jenkins/"

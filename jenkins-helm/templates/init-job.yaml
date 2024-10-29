@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-init-permissions
+  labels:
+    {{- include "jenkins.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: volume-permissions
+        image: busybox
+        command:
+        - /bin/sh
+        - -c
+        - |
+          mkdir -p /external/jenkins-volume
+          chmod -R 777 /external/jenkins-volume
+        volumeMounts:
+        - name: jenkins-storage
+          mountPath: /external
+      restartPolicy: OnFailure
+      volumes:
+      - name: jenkins-storage
+        hostPath:
+          path: /external
+          type: DirectoryOrCreate

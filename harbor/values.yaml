@@ -1,0 +1,30 @@
+expose:
+  type: ingress
+  ingress:
+    hosts:
+     core: "localhost"
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+externalURL: http://harbor.local
+
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      size: 5Gi
+    chartmuseum:
+      size: 2Gi
+    jobservice:
+      size: 1Gi
+    database:
+      size: 1Gi
+    redis:
+      size: 1Gi
+
+harborAdminPassword: "Harbor12345"
+
+notary:
+  enabled: false

@@ -1,0 +1,4 @@
+
+
+NIXOS: networking.firewall.enable = false;
+       install kubectl k9s kind

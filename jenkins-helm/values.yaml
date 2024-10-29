@@ -1,0 +1,17 @@
+controller:
+  adminUser: "admin"
+  adminPassword: "jenkins123"
+  serviceType: ClusterIP
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    hostName: "jenkins.local"
+  containerPort: 8080
+  servicePort: 80
+  containerPortM: 50000
+  servicePortM: 50000
+persistence:
+  enabled: true
+  storageClass: "standard"
+  accessMode: ReadWriteOnce
+  size: 20Gi

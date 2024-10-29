@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.agent.name }}
+  labels:
+    app: jenkins-agent
+    {{- include "jenkins-agent.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-agent
+  template:
+    metadata:
+      labels:
+        app: jenkins-agent
+    spec:
+      imagePullSecrets:
+      - name: harbor-secret
+      containers:
+      - name: jenkins-agent
+        image: ionutnechitaintel/inbound-agent:bookworm-plus
+        imagePullPolicy: Always
+        args:
+        - -workDir
+        - "{{ .Values.agent.workingDir }}"
+        - -url
+        - "{{ .Values.agent.jenkinsUrl }}"
+        - -secret
+        - "{{ .Values.agent.secret }}"
+        - -name
+        - "{{ .Values.agent.name }}"
+        - -webSocket
+        volumeMounts:
+        - name: workspace
+          mountPath: {{ .Values.agent.workingDir }}
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-agent-pvc
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock

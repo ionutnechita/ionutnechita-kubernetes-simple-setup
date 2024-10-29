@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-jenkins
+  labels:
+    {{- include "jenkins.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.controller.serviceType }}
+  ports:
+    - port: {{ .Values.controller.servicePort }}
+      targetPort: {{ .Values.controller.containerPort }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.controller.servicePortM }}
+      targetPort: {{ .Values.controller.containerPortM }}
+      protocol: TCP
+      name: management
+  selector:
+    app: jenkins

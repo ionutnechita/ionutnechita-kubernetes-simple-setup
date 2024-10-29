@@ -1,0 +1,12 @@
+agent:
+  name: "jenkins-agent"
+  jenkinsUrl: "jenkins-jenkins.default.svc.cluster.local"
+  secret: ""
+  workingDir: "/home/jenkins/agent"
+  labels: "docker linux"
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  accessMode: ReadWriteOnce
+  size: 60Gi
